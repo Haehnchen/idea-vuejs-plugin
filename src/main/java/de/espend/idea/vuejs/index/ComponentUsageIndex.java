@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ComponentUsageIndex extends FileBasedIndexExtension<String, List<String>> {
-    public static final ID<String, List<String>> KEY = ID.create("fr.adrienbrault.idea.symfony2plugin.parameter2");
+    public static final ID<String, List<String>> KEY = ID.create("de.espend.idea.vuejs.index.ComponentUsageIndex");
     private final KeyDescriptor<String> myKeyDescriptor = new EnumeratorStringDescriptor();
 
     @Override
@@ -105,7 +105,7 @@ public class ComponentUsageIndex extends FileBasedIndexExtension<String, List<St
 
     @Override
     public int getVersion() {
-        return 4;
+        return 1;
     }
 
     @NotNull
