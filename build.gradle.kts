@@ -7,7 +7,6 @@ plugins {
 }
 
 group = "de.espend.idea.vuejs"
-version = "0.01"
 
 repositories {
     mavenCentral()
