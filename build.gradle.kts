@@ -16,7 +16,6 @@ repositories {
 // Configure Gradle IntelliJ Plugin
 // Read more: https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
 intellij {
-    version.set("2023.3.3")
     version.set(properties("platformVersion"))
     type.set(properties("platformType"))
 
@@ -32,6 +31,10 @@ tasks {
     }
     withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
         kotlinOptions.jvmTarget = "17"
+    }
+
+    buildSearchableOptions {
+        enabled = false
     }
 
     patchPluginXml {
