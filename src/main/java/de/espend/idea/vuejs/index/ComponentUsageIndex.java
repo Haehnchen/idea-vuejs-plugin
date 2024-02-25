@@ -1,10 +1,18 @@
 package de.espend.idea.vuejs.index;
 
 import com.intellij.lang.ecmascript6.psi.ES6ImportedBinding;
+import com.intellij.lang.ecmascript6.psi.ES6Property;
 import com.intellij.lang.ecmascript6.resolve.JSFileReferencesUtil;
+import com.intellij.lang.javascript.psi.JSExpression;
+import com.intellij.lang.javascript.psi.JSObjectLiteralExpression;
+import com.intellij.lang.javascript.psi.JSProperty;
+import com.intellij.lang.javascript.psi.JSReferenceExpression;
+import com.intellij.lang.javascript.psi.impl.JSReferenceExpressionImpl;
+import com.intellij.lang.javascript.psi.util.JSStubBasedPsiTreeUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiRecursiveElementVisitor;
+import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.PathUtil;
 import com.intellij.util.indexing.*;
@@ -47,13 +55,35 @@ public class ComponentUsageIndex extends FileBasedIndexExtension<String, List<St
                             @Override
                             public void visitElement(@NotNull PsiElement element) {
                                 if (element instanceof ES6ImportedBinding es6ImportedBinding) {
-                                    VueJsUtil.ES6Import singleImported = VueJsUtil.getSingleImported(es6ImportedBinding);
-                                    if (singleImported != null) {
-                                        String fileName = PathUtil.getFileName(singleImported.fileNameWithoutExtension());
-                                        imports.put(JSFileReferencesUtil.getFileNameWithoutExtension(fileName, new String[] {".vue"}), Arrays.asList(singleImported.referenceText(), singleImported.importName()));
+                                    visitImportedBinding(es6ImportedBinding);
+                                } else if (element instanceof JSProperty jsProperty && "components".equals(jsProperty.getName())) {
+                                    // components: {Foobar}
+                                    JSExpression value = jsProperty.getValue();
+                                    if (value instanceof JSObjectLiteralExpression jsObjectLiteralExpression) {
+                                        for (ES6Property es6Property : PsiTreeUtil.collectElementsOfType(jsObjectLiteralExpression, ES6Property.class)) {
+                                            JSExpression value1 = es6Property.getValue();
+                                            if (value1 instanceof JSReferenceExpression jsReferenceExpression) {
+                                                String referenceName = JSReferenceExpressionImpl.getReferenceName(jsReferenceExpression.getNode());
+                                                if (referenceName != null) {
+                                                    for (PsiElement resolveLocallyWithMergedResult : JSStubBasedPsiTreeUtil.resolveLocallyWithMergedResults(referenceName, jsReferenceExpression)) {
+                                                        if (resolveLocallyWithMergedResult instanceof ES6ImportedBinding es6ImportedBinding) {
+                                                            visitImportedBinding(es6ImportedBinding);
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                                 super.visitElement(element);
+                            }
+
+                            private void visitImportedBinding(@NotNull ES6ImportedBinding es6ImportedBinding) {
+                                VueJsUtil.ES6Import singleImported = VueJsUtil.getSingleImported(es6ImportedBinding);
+                                if (singleImported != null) {
+                                    String fileName = PathUtil.getFileName(singleImported.fileNameWithoutExtension());
+                                    imports.put(JSFileReferencesUtil.getFileNameWithoutExtension(fileName, new String[] {".vue"}), Arrays.asList(singleImported.referenceText(), singleImported.importName()));
+                                }
                             }
                         });
                     }
