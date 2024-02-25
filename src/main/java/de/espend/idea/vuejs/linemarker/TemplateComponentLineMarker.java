@@ -41,6 +41,12 @@ public class TemplateComponentLineMarker implements LineMarkerProvider {
             // <foo-foo>
             // <FooFoo>
             if (psiElement.getNode().getElementType() == XmlTokenType.XML_NAME && psiElement.getParent() instanceof XmlTag xmlTag) {
+                PsiElement prevSibling = psiElement.getPrevSibling();
+                if (prevSibling.getNode().getElementType() == XmlTokenType.XML_END_TAG_START) {
+                    continue;
+                }
+
+
                 if (components == null) {
                     components = VueJsUtil.getLocalFileScopeComponents(containingFile);
                 }
@@ -48,7 +54,7 @@ public class TemplateComponentLineMarker implements LineMarkerProvider {
                 String componentTag = xmlTag.getName();
                 if (components.containsKey(componentTag)) {
                     NavigationGutterIconBuilder<PsiElement> builder = NavigationGutterIconBuilder.create(VueJsIcons.VUE_JS_TOOLBOX)
-                        .setTooltipText("Vue.js Toolbox: Navigate to Vue.js file")
+                        .setTooltipText("Vue.js Toolbox: Navigate to file")
                         .setTargets(NotNullLazyValue.lazy(new LocalFileComponentTargetSupplier(components, componentTag, psiElement)));
 
                     lineMarkerInfos.add(builder.createLineMarkerInfo(psiElement));
