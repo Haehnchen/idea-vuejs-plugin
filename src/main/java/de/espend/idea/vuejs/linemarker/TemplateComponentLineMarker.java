@@ -8,11 +8,11 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.psi.xml.XmlTokenType;
+import de.espend.idea.vuejs.VueJsIcons;
 import de.espend.idea.vuejs.target.LocalFileComponentTargetSupplier;
 import de.espend.idea.vuejs.utils.VueJsUtil;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.jetbrains.vuejs.VuejsIcons;
 
 import java.util.Collection;
 import java.util.List;
@@ -47,8 +47,8 @@ public class TemplateComponentLineMarker implements LineMarkerProvider {
 
                 String componentTag = xmlTag.getName();
                 if (components.containsKey(componentTag)) {
-                    NavigationGutterIconBuilder<PsiElement> builder = NavigationGutterIconBuilder.create(VuejsIcons.Vue)
-                        .setTooltipText("Navigate to Vue.js file")
+                    NavigationGutterIconBuilder<PsiElement> builder = NavigationGutterIconBuilder.create(VueJsIcons.VUE_JS_TOOLBOX)
+                        .setTooltipText("Vue.js Toolbox: Navigate to Vue.js file")
                         .setTargets(NotNullLazyValue.lazy(new LocalFileComponentTargetSupplier(components, componentTag, psiElement)));
 
                     lineMarkerInfos.add(builder.createLineMarkerInfo(psiElement));

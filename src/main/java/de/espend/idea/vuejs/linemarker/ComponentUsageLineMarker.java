@@ -12,6 +12,7 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.indexing.FileBasedIndex;
+import de.espend.idea.vuejs.VueJsIcons;
 import de.espend.idea.vuejs.index.ComponentUsageIndex;
 import de.espend.idea.vuejs.utils.VueJsUtil;
 import org.jetbrains.annotations.Nls;
@@ -50,8 +51,8 @@ public class ComponentUsageLineMarker implements LineMarkerProvider {
                 return;
             }
 
-            NavigationGutterIconBuilder<PsiElement> builder = NavigationGutterIconBuilder.create(VuejsIcons.Vue)
-                .setTooltipText("Navigate to Usages")
+            NavigationGutterIconBuilder<PsiElement> builder = NavigationGutterIconBuilder.create(VueJsIcons.VUE_JS_TOOLBOX)
+                .setTooltipText("Vue.js Toolbox: Navigate to Usages")
                 .setTargetRenderer(MyFileReferencePsiElementListCellRenderer::new)
                 .setTargets(NotNullLazyValue.lazy(() -> {
                     Collection<PsiElement> elements = new ArrayList<>();

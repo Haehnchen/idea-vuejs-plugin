@@ -1,22 +1,28 @@
 <!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
 <idea-plugin>
-    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
     <id>de.espend.idea.vuejs</id>
-
-    <!-- Public plugin name should be written in Title Case.
-         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
     <name>Vue.js Toolbox</name>
-
-    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
     <vendor email="daniel@espendiller.net" url="http://espend.de?p=de.espend.idea.vuejs">espend_de</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
     <description><![CDATA[
-    Enter short description for your plugin here.<br>
-    <em>most HTML tags may be used</em>
-  ]]></description>
+    <p>Provides additional <a href="https://vuejs.org/">Vue.js</a> support to all JetBrains IDEs that
+    <a href="https://www.jetbrains.com/products/#lang=js&type=ide">support JavaScript</a>.</p>
+
+    <h2>Features</h2>
+    <ul>
+      <li>LineMarker of components usages file</li>
+      <li>LineMarker for vue.js application entrypoint</li>
+      <li>LineMarker for vue.js application entrypoints</li>
+    </ul>
+
+    <h2>Getting started</h2>
+    <p>For information on getting started, head over to the <a href="https://www.jetbrains.com/help/">documentation</a> for your IDE.
+    For WebStorm, you can check out this section in the <a href="https://www.jetbrains.com/help/webstorm/vue-js.html">documentation</a>.</p>
+    ]]></description>
+    <category>JavaScript Frameworks and Tools</category>
 
     <!-- Product and plugin compatibility requirements.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
