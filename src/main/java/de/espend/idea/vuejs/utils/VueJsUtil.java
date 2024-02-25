@@ -3,7 +3,12 @@ package de.espend.idea.vuejs.utils;
 import com.intellij.lang.ecmascript6.psi.ES6FromClause;
 import com.intellij.lang.ecmascript6.psi.ES6ImportDeclaration;
 import com.intellij.lang.ecmascript6.psi.ES6ImportedBinding;
+import com.intellij.lang.ecmascript6.psi.ES6Property;
 import com.intellij.lang.ecmascript6.resolve.JSFileReferencesUtil;
+import com.intellij.lang.javascript.psi.JSExpression;
+import com.intellij.lang.javascript.psi.JSReferenceExpression;
+import com.intellij.lang.javascript.psi.impl.JSReferenceExpressionImpl;
+import com.intellij.lang.javascript.psi.util.JSStubBasedPsiTreeUtil;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
@@ -51,21 +56,37 @@ public class VueJsUtil {
             public boolean visitComponent(@NotNull String name, @NotNull VueComponent component, @NotNull VueModelVisitor.Proximity proximity) {
                 PsiElement source = component.getSource();
                 if (source instanceof ES6ImportedBinding es6ImportedBinding) {
-                    ES6ImportDeclaration declaration = es6ImportedBinding.getDeclaration();
-                    if (declaration != null) {
-                        ES6FromClause fromClause = declaration.getFromClause();
-                        if (fromClause != null) {
-                            String referenceText1 = fromClause.getReferenceText();
-                            if (referenceText1 != null) {
-                                String referenceText = StringUtil.unquoteString(referenceText1);
-                                components.putIfAbsent(name, referenceText);
-                                components.put(VueJsUtil.convertToKebabCase(name), referenceText);
+                    visitES6ImportedBinding(name, es6ImportedBinding);
+                } else if (source instanceof ES6Property es6Property) {
+                    JSExpression value1 = es6Property.getValue();
+                    if (value1 instanceof JSReferenceExpression jsReferenceExpression) {
+                        String referenceName = JSReferenceExpressionImpl.getReferenceName(jsReferenceExpression.getNode());
+                        if (referenceName != null) {
+                            for (PsiElement resolveLocallyWithMergedResult : JSStubBasedPsiTreeUtil.resolveLocallyWithMergedResults(referenceName, jsReferenceExpression)) {
+                                if (resolveLocallyWithMergedResult instanceof ES6ImportedBinding es6ImportedBinding) {
+                                    visitES6ImportedBinding(name, es6ImportedBinding);
+                                }
                             }
                         }
                     }
                 }
 
                 return super.visitComponent(name, component, proximity);
+            }
+
+            private void visitES6ImportedBinding(@NotNull String name, ES6ImportedBinding es6ImportedBinding) {
+                ES6ImportDeclaration declaration = es6ImportedBinding.getDeclaration();
+                if (declaration != null) {
+                    ES6FromClause fromClause = declaration.getFromClause();
+                    if (fromClause != null) {
+                        String referenceText1 = fromClause.getReferenceText();
+                        if (referenceText1 != null) {
+                            String referenceText = StringUtil.unquoteString(referenceText1);
+                            components.putIfAbsent(name, referenceText);
+                            components.put(VueJsUtil.convertToKebabCase(name), referenceText);
+                        }
+                    }
+                }
             }
         }, VueModelVisitor.Proximity.GLOBAL);
 
