@@ -43,40 +43,42 @@ public class ComponentUsageLineMarker implements LineMarkerProvider {
             return;
         }
 
-        PsiElement psiElement = psiElements.get(0);
-        VueFile vueFile = (VueFile) psiElement.getContainingFile();
-        if (vueFile.getName().endsWith(".vue")) {
-            String filenameWithoutExtension = vueFile.getName().substring(0, vueFile.getName().length() - 4);
-            if (FileBasedIndex.getInstance().getContainingFiles(ComponentUsageIndex.KEY, filenameWithoutExtension, GlobalSearchScope.allScope(psiElement.getProject())).isEmpty()) {
-                return;
-            }
-
-            NavigationGutterIconBuilder<PsiElement> builder = NavigationGutterIconBuilder.create(VueJsIcons.VUE_JS_TOOLBOX)
-                .setTooltipText("Vue.js Toolbox: Navigate to Usages")
-                .setTargetRenderer(MyFileReferencePsiElementListCellRenderer::new)
-                .setTargets(NotNullLazyValue.lazy(() -> {
-                    Collection<PsiElement> elements = new ArrayList<>();
-
-                    for (VirtualFile value : FileBasedIndex.getInstance().getContainingFiles(ComponentUsageIndex.KEY, filenameWithoutExtension, GlobalSearchScope.allScope(psiElement.getProject()))) {
-                        PsiFile file = PsiManager.getInstance(psiElement.getProject()).findFile(value);
-                        if (file instanceof VueFile vueFile1) {
-                            for (Map.Entry<String, List<String>> entry : FileBasedIndex.getInstance().getFileData(ComponentUsageIndex.KEY, value, file.getProject()).entrySet()) {
-                                String refImport = entry.getValue().get(0);
-                                String importAlias = entry.getValue().get(1);
-
-                                VirtualFile relativeFile = VfsUtil.findRelativeFile(refImport, value);
-
-                                if (vueFile.getVirtualFile().equals(relativeFile)) {
-                                    elements.addAll(VueJsUtil.getTemplateTags(vueFile1, importAlias, VueJsUtil.convertToKebabCase(importAlias)));
-                                }
-                            }
-                        }
+        for (PsiElement psiElement : psiElements) {
+            if (psiElement instanceof VueFile vueFile && vueFile.getName().endsWith(".vue")) {
+                if (vueFile.getName().endsWith(".vue")) {
+                    String filenameWithoutExtension = vueFile.getName().substring(0, vueFile.getName().length() - 4);
+                    if (FileBasedIndex.getInstance().getContainingFiles(ComponentUsageIndex.KEY, filenameWithoutExtension, GlobalSearchScope.allScope(psiElement.getProject())).isEmpty()) {
+                        return;
                     }
 
-                    return elements;
-                }));
+                    NavigationGutterIconBuilder<PsiElement> builder = NavigationGutterIconBuilder.create(VueJsIcons.VUE_JS_TOOLBOX)
+                        .setTooltipText("Vue.js Toolbox: Navigate to Usages")
+                        .setTargetRenderer(MyFileReferencePsiElementListCellRenderer::new)
+                        .setTargets(NotNullLazyValue.lazy(() -> {
+                            Collection<PsiElement> elements = new ArrayList<>();
 
-            lineMarkerInfos.add(builder.createLineMarkerInfo(psiElement));
+                            for (VirtualFile value : FileBasedIndex.getInstance().getContainingFiles(ComponentUsageIndex.KEY, filenameWithoutExtension, GlobalSearchScope.allScope(psiElement.getProject()))) {
+                                PsiFile file = PsiManager.getInstance(psiElement.getProject()).findFile(value);
+                                if (file instanceof VueFile vueFile1) {
+                                    for (Map.Entry<String, List<String>> entry : FileBasedIndex.getInstance().getFileData(ComponentUsageIndex.KEY, value, file.getProject()).entrySet()) {
+                                        String refImport = entry.getValue().get(0);
+                                        String importAlias = entry.getValue().get(1);
+
+                                        VirtualFile relativeFile = VfsUtil.findRelativeFile(refImport, value);
+
+                                        if (vueFile.getVirtualFile().equals(relativeFile)) {
+                                            elements.addAll(VueJsUtil.getTemplateTags(vueFile1, importAlias, VueJsUtil.convertToKebabCase(importAlias)));
+                                        }
+                                    }
+                                }
+                            }
+
+                            return elements;
+                        }));
+
+                    lineMarkerInfos.add(builder.createLineMarkerInfo(psiElement));
+                }
+            }
         }
     }
 
