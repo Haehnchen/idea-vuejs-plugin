@@ -6,11 +6,12 @@ IntelliJ IDEA / PhpStorm Vue.js Toolbox Plugin
 [![Downloads](http://phpstorm.espend.de/badge/23832/downloads)](https://plugins.jetbrains.com/plugin/23832)
 [![Downloads last month](http://phpstorm.espend.de/badge/23832/last-month)](https://plugins.jetbrains.com/plugin/23832)
 
-| Key        | Value                                                     |
-|------------|-----------------------------------------------------------|
-| Plugin Url | https://plugins.jetbrains.com/plugin/23832-vue-js-toolbox |
-| ID         | de.espend.idea.vuejs                                      |
-| Changelog  | [CHANGELOG](CHANGELOG.md)                                 |
+| Key           | Value                                                     |
+|---------------|-----------------------------------------------------------|
+| Plugin Url    | https://plugins.jetbrains.com/plugin/23832-vue-js-toolbox |
+| ID            | de.espend.idea.vuejs                                      |
+| Documentation | https://espend.de/phpstorm/plugin/vuejs-toolbox           |
+| Changelog     | [CHANGELOG](CHANGELOG.md)                                 |
 
 Install
 ---------------------
