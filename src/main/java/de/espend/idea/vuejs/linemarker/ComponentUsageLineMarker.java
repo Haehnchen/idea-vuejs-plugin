@@ -26,6 +26,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class ComponentUsageLineMarker implements LineMarkerProvider {
     @Override
     public @Nullable LineMarkerInfo<?> getLineMarkerInfo(@NotNull PsiElement psiElement) {

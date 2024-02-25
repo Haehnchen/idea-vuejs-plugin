@@ -22,6 +22,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * @author Daniel Espendiller <daniel@espendiller.net>
+ */
 public class ComponentUsageIndex extends FileBasedIndexExtension<String, List<String>> {
     public static final ID<String, List<String>> KEY = ID.create("de.espend.idea.vuejs.index.ComponentUsageIndex");
     private final KeyDescriptor<String> myKeyDescriptor = new EnumeratorStringDescriptor();

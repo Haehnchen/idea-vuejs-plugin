@@ -29,7 +29,9 @@
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.lineMarkerProvider language="Vue" implementationClass="de.espend.idea.vuejs.linemarker.TemplateComponentLineMarker"/>
         <codeInsight.lineMarkerProvider language="HTML" implementationClass="de.espend.idea.vuejs.linemarker.ComponentUsageLineMarker"/>
+        <codeInsight.lineMarkerProvider language="HTML" implementationClass="de.espend.idea.vuejs.linemarker.AppEntrypointLineMarker"/>
 
         <fileBasedIndex implementation="de.espend.idea.vuejs.index.ComponentUsageIndex"/>
+        <fileBasedIndex implementation="de.espend.idea.vuejs.index.AppEntrypointIndex"/>
     </extensions>
 </idea-plugin>
