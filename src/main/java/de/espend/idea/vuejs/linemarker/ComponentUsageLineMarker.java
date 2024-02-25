@@ -4,6 +4,8 @@ import com.intellij.codeInsight.daemon.LineMarkerInfo;
 import com.intellij.codeInsight.daemon.LineMarkerProvider;
 import com.intellij.codeInsight.navigation.NavigationGutterIconBuilder;
 import com.intellij.codeInsight.navigation.impl.PsiTargetPresentationRenderer;
+import com.intellij.javascript.nodejs.packageJson.PackageJsonFileManager;
+import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.NotNullLazyValue;
 import com.intellij.openapi.vfs.VfsUtil;
 import com.intellij.openapi.vfs.VirtualFile;
@@ -22,10 +24,7 @@ import org.jetbrains.vuejs.VuejsIcons;
 import org.jetbrains.vuejs.lang.html.VueFile;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -64,10 +63,21 @@ public class ComponentUsageLineMarker implements LineMarkerProvider {
                                         String refImport = entry.getValue().get(0);
                                         String importAlias = entry.getValue().get(1);
 
-                                        VirtualFile relativeFile = VfsUtil.findRelativeFile(refImport, value);
+                                        if (refImport.startsWith(".")) {
+                                            VirtualFile relativeFile = VfsUtil.findRelativeFile(refImport, value);
 
-                                        if (vueFile.getVirtualFile().equals(relativeFile)) {
-                                            elements.addAll(VueJsUtil.getTemplateTags(vueFile1, importAlias, VueJsUtil.convertToKebabCase(importAlias)));
+                                            if (vueFile.getVirtualFile().equals(relativeFile)) {
+                                                elements.addAll(VueJsUtil.getTemplateTags(vueFile1, importAlias, VueJsUtil.convertToKebabCase(importAlias)));
+                                            }
+                                        } else {
+                                            String replace = refImport.replace("\\", "/");
+                                            if (replace.startsWith("~/")) {
+                                                replace = replace.substring(2);
+                                            }
+
+                                            if (isImportInScope(file.getProject(), vueFile.getVirtualFile(), replace)) {
+                                                elements.addAll(VueJsUtil.getTemplateTags(vueFile1, importAlias, VueJsUtil.convertToKebabCase(importAlias)));
+                                            }
                                         }
                                     }
                                 }
@@ -80,6 +90,22 @@ public class ComponentUsageLineMarker implements LineMarkerProvider {
                 }
             }
         }
+    }
+
+    private static boolean isImportInScope(@NotNull Project project, @NotNull VirtualFile fileOpen, @NotNull String foreignImport) {
+        for (VirtualFile validPackageJsonFile : PackageJsonFileManager.getInstance(project).getValidPackageJsonFiles()) {
+            String relativePath = VfsUtil.getRelativePath(fileOpen, validPackageJsonFile.getParent(), '/');
+            if (relativePath == null) {
+                continue;
+            }
+
+            VirtualFile relativeFile = VfsUtil.findRelativeFile(foreignImport, validPackageJsonFile);
+            if (fileOpen.equals(relativeFile)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private static class MyFileReferencePsiElementListCellRenderer extends PsiTargetPresentationRenderer<PsiElement> {
