@@ -38,25 +38,25 @@ public class AppEntrypointLineMarker implements LineMarkerProvider {
             return;
         }
 
-        PsiElement psiElement = psiElements.get(0);
-        VueFile vueFile = (VueFile) psiElement.getContainingFile();
-        if (vueFile.getName().endsWith(".vue")) {
-            String filenameWithoutExtension = vueFile.getName().substring(0, vueFile.getName().length() - 4);
-            if (FileBasedIndex.getInstance().getContainingFiles(AppEntrypointIndex.KEY, filenameWithoutExtension, GlobalSearchScope.allScope(psiElement.getProject())).isEmpty()) {
-                return;
+        for (PsiElement psiElement : psiElements) {
+            if (psiElement instanceof VueFile vueFile && vueFile.getName().endsWith(".vue")) {
+                String filenameWithoutExtension = vueFile.getName().substring(0, vueFile.getName().length() - 4);
+                if (FileBasedIndex.getInstance().getContainingFiles(AppEntrypointIndex.KEY, filenameWithoutExtension, GlobalSearchScope.allScope(psiElement.getProject())).isEmpty()) {
+                    return;
+                }
+
+                if (getTargets(filenameWithoutExtension, psiElement, vueFile).isEmpty()) {
+                    return;
+                }
+
+                NavigationGutterIconBuilder<PsiElement> builder = NavigationGutterIconBuilder.create(AllIcons.Nodes.Plugin)
+                    .setTooltipText("Vue.js Toolbox: Navigate to initialization")
+                    .setTargets(NotNullLazyValue.lazy(() -> new ArrayList<>(
+                        getTargets(filenameWithoutExtension, psiElement, vueFile)
+                    )));
+
+                lineMarkerInfos.add(builder.createLineMarkerInfo(psiElement));
             }
-
-            if (getTargets(filenameWithoutExtension, psiElement, vueFile).isEmpty()) {
-                return;
-            }
-
-            NavigationGutterIconBuilder<PsiElement> builder = NavigationGutterIconBuilder.create(AllIcons.Nodes.Plugin)
-                .setTooltipText("Vue.js Toolbox: Navigate to initialization")
-                .setTargets(NotNullLazyValue.lazy(() -> new ArrayList<>(
-                    getTargets(filenameWithoutExtension, psiElement, vueFile)
-                )));
-
-            lineMarkerInfos.add(builder.createLineMarkerInfo(psiElement));
         }
     }
 
