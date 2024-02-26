@@ -39,4 +39,16 @@ public class AppEntryPsiRecursiveElementVisitorTest extends VueJsLightJavaCodeIn
         assertEquals("./App.vue", app.get(0));
         assertEquals("createElement", app.get(1));
     }
+
+    public void testCreateappV2New() {
+        PsiFile psiFile = myFixture.configureByFile("appentry-mount-v2.js");
+
+        Map<String, List<String>> map = new HashMap<>();
+        psiFile.acceptChildren(new AppEntryPsiRecursiveElementVisitor(map));
+
+        List<String> app = map.get("App");
+
+        assertEquals("./App.vue", app.get(0));
+        assertEquals("$mount", app.get(1));
+    }
 }
