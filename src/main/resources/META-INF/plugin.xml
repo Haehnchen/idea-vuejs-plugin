@@ -38,5 +38,7 @@
 
         <fileBasedIndex implementation="de.espend.idea.vuejs.index.ComponentUsageIndex"/>
         <fileBasedIndex implementation="de.espend.idea.vuejs.index.AppEntrypointIndex"/>
+
+        <errorHandler implementation="de.espend.idea.vuejs.utils.PluginErrorReporterSubmitter"/>
     </extensions>
 </idea-plugin>
