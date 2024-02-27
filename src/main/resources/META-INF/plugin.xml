@@ -1,11 +1,16 @@
 <idea-plugin>
     <id>de.espend.idea.vuejs</id>
     <name>Vue.js Toolbox</name>
+    <version>1.0.0</version>
     <vendor email="daniel@espendiller.net" url="http://espend.de?p=de.espend.idea.vuejs">espend_de</vendor>
 
     <description><![CDATA[
     <p>Provides additional <a href="https://vuejs.org/">Vue.js</a> support to all JetBrains IDEs that
     <a href="https://www.jetbrains.com/products/#lang=js&type=ide">support JavaScript</a>.</p>
+
+    <br/>
+
+    <a href="https://espend.de/phpstorm/plugin/vuejs-toolbox">Project Page / Documentation</a>
 
     <h2>Features</h2>
 
