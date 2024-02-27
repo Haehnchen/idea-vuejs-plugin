@@ -92,15 +92,18 @@ public class VueJsUtil {
 
 
         // current directory scope
-        for (VirtualFile child : containingFile.getVirtualFile().getParent().getChildren()) {
-            String name = child.getName();
-            if (!name.endsWith(".vue")) {
-                continue;
-            }
+        VirtualFile parent = containingFile.getVirtualFile().getParent();
+        if (parent != null) {
+            for (VirtualFile child : parent.getChildren()) {
+                String name = child.getName();
+                if (!name.endsWith(".vue")) {
+                    continue;
+                }
 
-            String substring = name.substring(0, name.length() - 4);
-            components.putIfAbsent(substring, "./" + name);
-            components.putIfAbsent(VueJsUtil.convertToKebabCase(substring), "./" + name);
+                String substring = name.substring(0, name.length() - 4);
+                components.putIfAbsent(substring, "./" + name);
+                components.putIfAbsent(VueJsUtil.convertToKebabCase(substring), "./" + name);
+            }
         }
 
         return components;

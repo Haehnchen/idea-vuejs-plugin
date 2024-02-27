@@ -21,10 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.vuejs.index.VueFrameworkHandlerKt;
 import org.jetbrains.vuejs.lang.html.VueFile;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
@@ -82,10 +79,12 @@ public class VueJsComponentIndexUtil {
 
         Map<String, String> directoryScope = new HashMap<>();
 
-        VirtualFile[] vueFiles = Arrays.stream(vueFile
-                .getVirtualFile()
-                .getParent()
-                .getChildren())
+        VirtualFile parent = vueFile.getVirtualFile().getParent();
+        if (parent == null) {
+            return Collections.emptyMap();
+        }
+
+        VirtualFile[] vueFiles = Arrays.stream(parent.getChildren())
             .filter(v -> "vue".equalsIgnoreCase(v.getExtension()) && !v.getName().equalsIgnoreCase(vueFile.getName()))
             .toArray(VirtualFile[]::new);
 
