@@ -1,6 +1,5 @@
 package de.espend.idea.vuejs.mcp.collector
 
-import com.intellij.openapi.application.ApplicationManager
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.roots.ProjectRootManager
 import com.intellij.openapi.vfs.VirtualFile
@@ -19,9 +18,7 @@ class VueComponentCollector(private val project: Project) {
             ?.lowercase()
             ?.takeIf { it.isNotEmpty() }
 
-        val rows = ApplicationManager.getApplication().runReadAction<List<ComponentRow>> {
-            collectRows(normalizedSearch)
-        }
+        val rows = collectRows(normalizedSearch)
 
         return buildString {
             append(HEADER)

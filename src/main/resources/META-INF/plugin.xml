@@ -25,6 +25,7 @@
     <ul>
       <li>list_vue_components - Lists Vue.js components with name and file path</li>
       <li>list_vue_component_usages - Lists components with unique usage file paths</li>
+      <li>list_vue_app_entrypoints - Lists Vue.js templates used as app entrypoints with their initializing JS/TS file and detection pattern</li>
     </ul>
     <p>Requires <a href="https://plugins.jetbrains.com/plugin/26071-mcp-server">MCP Server plugin</a>.</p>
 
