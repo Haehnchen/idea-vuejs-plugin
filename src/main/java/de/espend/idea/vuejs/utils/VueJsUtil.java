@@ -3,9 +3,9 @@ package de.espend.idea.vuejs.utils;
 import com.intellij.lang.ecmascript6.psi.ES6FromClause;
 import com.intellij.lang.ecmascript6.psi.ES6ImportDeclaration;
 import com.intellij.lang.ecmascript6.psi.ES6ImportedBinding;
-import com.intellij.lang.ecmascript6.psi.ES6Property;
 import com.intellij.lang.ecmascript6.resolve.JSFileReferencesUtil;
 import com.intellij.lang.javascript.psi.JSExpression;
+import com.intellij.lang.javascript.psi.JSProperty;
 import com.intellij.lang.javascript.psi.JSReferenceExpression;
 import com.intellij.lang.javascript.psi.impl.JSReferenceExpressionImpl;
 import com.intellij.lang.javascript.psi.util.JSStubBasedPsiTreeUtil;
@@ -57,7 +57,7 @@ public class VueJsUtil {
                 PsiElement source = component.getSource();
                 if (source instanceof ES6ImportedBinding es6ImportedBinding) {
                     visitES6ImportedBinding(name, es6ImportedBinding);
-                } else if (source instanceof ES6Property es6Property) {
+                } else if (source instanceof JSProperty es6Property) {
                     JSExpression value1 = es6Property.getValue();
                     if (value1 instanceof JSReferenceExpression jsReferenceExpression) {
                         String referenceName = JSReferenceExpressionImpl.getReferenceName(jsReferenceExpression.getNode());
