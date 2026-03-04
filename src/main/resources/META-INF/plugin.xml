@@ -21,6 +21,13 @@
       <li>Component targets</li>
     </ul>
 
+    <h3>MCP Tools</h3>
+    <ul>
+      <li>list_vue_components - Lists Vue.js components with name and file path</li>
+      <li>list_vue_component_usages - Lists components with unique usage file paths</li>
+    </ul>
+    <p>Requires <a href="https://plugins.jetbrains.com/plugin/26071-mcp-server">MCP Server plugin</a>.</p>
+
     <h2>Getting started</h2>
     <p>For information on getting started, head over to the <a href="https://www.jetbrains.com/help/">documentation</a> for your IDE.
     For WebStorm, you can check out this section in the <a href="https://www.jetbrains.com/help/webstorm/vue-js.html">documentation</a>.</p>
@@ -30,6 +37,7 @@
     <depends>com.intellij.modules.platform</depends>
 
     <depends>org.jetbrains.plugins.vue</depends>
+    <depends config-file="mcp.xml" optional="true">com.intellij.mcpServer</depends>
 
     <extensions defaultExtensionNs="com.intellij">
         <codeInsight.lineMarkerProvider language="Vue" implementationClass="de.espend.idea.vuejs.linemarker.TemplateComponentLineMarker"/>

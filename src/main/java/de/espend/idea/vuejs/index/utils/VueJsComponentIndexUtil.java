@@ -1,7 +1,6 @@
 package de.espend.idea.vuejs.index.utils;
 
 import com.intellij.lang.ecmascript6.psi.ES6ImportedBinding;
-import com.intellij.lang.ecmascript6.psi.ES6Property;
 import com.intellij.lang.ecmascript6.resolve.JSFileReferencesUtil;
 import com.intellij.lang.javascript.psi.JSExpression;
 import com.intellij.lang.javascript.psi.JSObjectLiteralExpression;
@@ -42,7 +41,7 @@ public class VueJsComponentIndexUtil {
                         // components: {Foobar}
                         JSExpression value = jsProperty.getValue();
                         if (value instanceof JSObjectLiteralExpression jsObjectLiteralExpression) {
-                            for (ES6Property es6Property : PsiTreeUtil.collectElementsOfType(jsObjectLiteralExpression, ES6Property.class)) {
+                            for (JSProperty es6Property : PsiTreeUtil.collectElementsOfType(jsObjectLiteralExpression, JSProperty.class)) {
                                 JSExpression value1 = es6Property.getValue();
                                 if (value1 instanceof JSReferenceExpression jsReferenceExpression) {
                                     String referenceName = JSReferenceExpressionImpl.getReferenceName(jsReferenceExpression.getNode());

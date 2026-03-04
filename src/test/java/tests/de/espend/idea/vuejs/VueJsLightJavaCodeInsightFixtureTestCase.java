@@ -15,7 +15,7 @@ import java.util.HashSet;
 /**
  * @author Daniel Espendiller <daniel@espendiller.net>
  */
-public class VueJsLightJavaCodeInsightFixtureTestCase extends LightJavaCodeInsightFixtureTestCase {
+abstract public class VueJsLightJavaCodeInsightFixtureTestCase extends LightJavaCodeInsightFixtureTestCase {
     public void setUp() throws Exception {
         super.setUp();
     }

@@ -16,6 +16,17 @@
 
 * Install the plugin by going to `Settings -> Plugins -> Browse repositories` and then search for `Vue.js Toolbox`.
 
+## MCP Support
+
+Provides MCP tools for AI assistants. See [MCP Server Plugin](https://plugins.jetbrains.com/plugin/26071-mcp-server) for setup instructions.
+
+### Available Tools
+
+| Tool | Description |
+|------|-------------|
+| `list_vue_components` | Lists Vue.js components with name and file path |
+| `list_vue_component_usages` | Lists Vue.js components with unique usage file paths |
+
 ## Component Usages
 
 ### Navigation to component usages
