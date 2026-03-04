@@ -47,15 +47,12 @@ class VueComponentUsageCollector(private val project: Project) {
     private fun collectRows(search: String?): List<ComponentUsageRow> {
         val psiManager = PsiManager.getInstance(project)
         val components = LinkedHashMap<String, ComponentUsageRow>()
-        val projectScope = GlobalSearchScope.projectScope(project)
-
-        FileBasedIndex.getInstance().ensureUpToDate(ComponentUsageIndex.KEY, project, projectScope)
 
         val candidateFiles = getProjectVueFiles()
 
         candidateFiles.forEach { componentFile ->
             val psiFile = psiManager.findFile(componentFile) as? VueFile ?: return@forEach
-            val component = VueModelManager.Companion.getComponent(psiFile)
+            val component = VueModelManager.getComponent(psiFile)
 
             val sourceFile = component?.source?.containingFile?.virtualFile ?: componentFile
             val pascalName = toPascalCase(component?.defaultName ?: sourceFile.nameWithoutExtension)
