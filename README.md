@@ -27,6 +27,7 @@ Provides MCP tools for AI assistants. See [MCP Server Plugin](https://plugins.je
 |------|-------------|
 | `list_vue_components` | Lists Vue.js components with name and file path |
 | `list_vue_component_usages` | Lists Vue.js components with unique usage file paths |
+| `list_vue_app_entrypoints` | Lists Vue.js templates used as app entrypoints with their initializing JS/TS file and detection pattern |
 
 ## Component Usages
 
